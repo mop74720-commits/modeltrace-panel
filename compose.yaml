@@ -1,0 +1,26 @@
+services:
+  modeltrace:
+    build: .
+    ports:
+      - "127.0.0.1:7860:7860"
+    environment:
+      PANEL_ACCESS_TOKEN: ${PANEL_ACCESS_TOKEN:?Set PANEL_ACCESS_TOKEN in your deployment environment}
+      UPSTREAM_HOSTS: ${UPSTREAM_HOSTS:-}
+      UPSTREAM_BASE_URL: ${UPSTREAM_BASE_URL:-}
+      UPSTREAM_MODEL: ${UPSTREAM_MODEL:-}
+      UPSTREAM_API_KEY: ${UPSTREAM_API_KEY:-}
+      ALLOW_PRIVATE_UPSTREAM: ${ALLOW_PRIVATE_UPSTREAM:-0}
+      CONFIG_ENCRYPTION_KEY: ${CONFIG_ENCRYPTION_KEY:-}
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - modeltrace_config:/app/config
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  modeltrace_config:

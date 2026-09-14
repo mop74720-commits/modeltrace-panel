@@ -1,0 +1,48 @@
+:root{--bg:#f4f6f2;--ink:#16211d;--muted:#65736d;--line:#d6ded8;--accent:#e54f2f;--green:#218f68}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,sans-serif}header{height:74px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,calc((100% - 1160px)/2));background:#f8faf7}.brand{display:flex;gap:12px;align-items:center}.brand>span{display:grid;place-items:center;width:34px;height:34px;background:var(--ink);color:#fff;font:500 13px 'DM Mono';letter-spacing:-1px}.brand b{display:block;font-size:15px;letter-spacing:-.3px}.brand small{display:block;color:var(--muted);font:10px 'DM Mono';letter-spacing:1px;margin-top:2px}.pill,.mono,.kicker{font:11px 'DM Mono';letter-spacing:.5px}.pill{padding:7px 11px;border:1px solid var(--line);color:var(--muted)}.pill.ok{color:var(--green);border-color:#a8d4c3}.pill.err{color:var(--accent);border-color:#f1b5a7}main{max-width:1160px;margin:auto;padding:70px 24px}.hero{max-width:730px;margin-bottom:48px}.eyebrow,.kicker{color:var(--accent);font-weight:500}.eyebrow{font:11px 'DM Mono';letter-spacing:1.4px}.hero h1{font-size:clamp(40px,6vw,72px);line-height:1.02;letter-spacing:-3px;margin:15px 0 20px}.hero h1 em{font-style:normal;color:var(--accent)}.hero p:not(.eyebrow){font-size:17px;line-height:1.7;color:var(--muted);max-width:620px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:#fff;border:1px solid var(--line);padding:28px}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px}.kicker{font-size:10px}.panel h2{font-size:23px;letter-spacing:-1px;margin:7px 0 0}.dot{width:9px;height:9px;background:var(--green);border-radius:50%;box-shadow:0 0 0 4px #d9eee6}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;font-size:12px;font-weight:700;margin:0 0 17px}input,select{width:100%;border:1px solid var(--line);background:#fbfcfa;padding:12px 13px;margin-top:7px;font:13px 'DM Mono';color:var(--ink);outline:0}input:focus,select:focus{border-color:var(--green)}button{border:0;cursor:pointer;font:600 12px Manrope}.primary{width:100%;padding:15px;background:var(--ink);color:#fff;margin-top:4px}.primary:hover{background:#263832}.primary span{float:right;color:#8de3bf;font-size:18px;line-height:12px}.hint,.disclaimer{font-size:11px;color:var(--muted);line-height:1.6}.challenge-list{min-height:410px}.empty{height:360px;display:grid;place-content:center;text-align:center;color:var(--muted);font-size:13px;line-height:2}.empty small{font-size:11px}.challenge{border-top:1px solid var(--line);padding:15px 0;display:grid;grid-template-columns:1fr auto;gap:8px}.challenge:first-child{border-top:0;padding-top:0}.challenge b{font-size:13px}.challenge small{display:block;color:var(--muted);font:11px 'DM Mono';margin-top:4px}.challenge button{background:transparent;color:var(--accent);padding:0}.challenge .state{grid-column:1/-1;font-size:11px;color:var(--muted)}.challenge.done .state{color:var(--green)}.report{margin-top:16px}.report[hidden]{display:none}.summary{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:22px}.summary>div{background:#fbfcfa;padding:18px}.summary small{display:block;color:var(--muted);font:10px 'DM Mono';margin-bottom:8px}.summary strong{font-size:18px;letter-spacing:-.6px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line)}th{color:var(--muted);font:10px 'DM Mono';text-transform:uppercase}tr.winner td{color:var(--green);font-weight:700}.bar{height:6px;background:#e8eeea;min-width:90px}.bar i{display:block;height:100%;background:var(--green)}.ghost{background:transparent;color:var(--accent);padding:6px}.disclaimer{border-top:1px solid var(--line);margin:22px 0 0;padding-top:15px}footer{display:flex;justify-content:space-between;color:var(--muted);font:10px 'DM Mono';padding:30px 0}footer a{color:inherit}@media(max-width:760px){main{padding-top:42px}.grid{grid-template-columns:1fr}.hero h1{letter-spacing:-2px}.summary{grid-template-columns:1fr}.panel{padding:22px}.row{grid-template-columns:1fr 1fr}}
+
+/* Interactive controls and responsive detail views. All fonts are local fallbacks. */
+:root { --mono: "Cascadia Code", Consolas, monospace; }
+body { font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif; }
+[hidden] { display: none !important; }
+button { font-family: inherit; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+fieldset { padding: 0; margin: 0; border: 0; min-width: 0; }
+input, select, textarea { min-width: 0; font-family: var(--mono); }
+textarea { width: 100%; resize: vertical; min-height: 100px; border: 1px solid var(--line); background: #fbfcfa; padding: 12px; margin-top: 8px; font-size: 12px; }
+textarea:focus { outline: 1px solid var(--green); }
+.grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+.panel, .challenge { min-width: 0; }
+.pill { max-width: 52%; line-height: 1.5; overflow-wrap: anywhere; }
+.tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+.config-actions { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: stretch; }
+.saved-actions { min-height: 0; margin-top: -10px; margin-bottom: 14px; }
+.saved-actions .ghost { padding-left: 0; }
+.config-actions .ghost { border: 1px solid var(--line); padding: 0 15px; }
+.tabs button { background: transparent; padding: 14px 0; color: var(--muted); border-bottom: 2px solid transparent; }
+.tabs button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.access { background: #fff; border: 1px solid var(--line); max-width: 600px; padding: 24px; margin-bottom: 24px; }
+.instructions p { font-size: 14px; color: var(--muted); line-height: 1.9; }
+.method { border-top: 1px solid var(--line); margin-top: 25px; padding-top: 17px; }
+summary { color: var(--muted); cursor: pointer; font-size: 12px; }
+.method p, .bank-list { color: var(--muted); font-size: 12px; line-height: 1.8; overflow-wrap: anywhere; }
+.challenge { padding: 22px 0; }
+.challenge-status { color: var(--muted); font-size: 11px; }
+.challenge.done .challenge-status { color: var(--green); }
+.challenge details, .challenge .paste { grid-column: 1 / -1; margin: 3px 0; }
+.challenge .state { line-height: 1.7; overflow-wrap: anywhere; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #f4f6f2; padding: 12px; font: 11px/1.8 var(--mono); max-height: 280px; overflow: auto; }
+.copy { justify-self: start; }
+.working { animation: pulse 1.5s ease-in-out infinite; }
+.notice { color: #805818; background: #fff8e8; padding: 14px; font-size: 12px; line-height: 1.7; }
+.summary strong { overflow-wrap: anywhere; }
+.table-wrap { overflow-x: auto; }
+progress { width: 90px; height: 6px; appearance: none; border: 0; background: #e8eeea; }
+progress::-webkit-progress-bar { background: #e8eeea; }
+progress::-webkit-progress-value { background: var(--green); }
+progress::-moz-progress-bar { background: var(--green); }
+footer { gap: 16px; flex-wrap: wrap; line-height: 1.8; }
+@keyframes pulse { 50% { opacity: .4; } }
+@media (prefers-reduced-motion: reduce) { .working { animation: none; } }
+@media (max-width: 760px) { .grid { grid-template-columns: minmax(0, 1fr); } .challenge-list { min-height: 240px; } .empty { height: 240px; } header { height: auto; min-height: 74px; gap: 12px; padding: 16px 20px; } .brand small { font-size: 8px; } }
+@media (max-width: 420px) { main { padding-left: 16px; padding-right: 16px; } .row { grid-template-columns: 1fr; gap: 0; } .panel { padding: 20px; } .hero h1 { font-size: 38px; } .panel-head { gap: 12px; } .mono { line-height: 1.6; } }

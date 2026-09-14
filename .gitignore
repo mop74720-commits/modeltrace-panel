@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+*.log
+config/
+*.enc
+*.pem
+*.key
+*.zip
+work-server*.log
+

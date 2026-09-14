@@ -1,0 +1,4 @@
+Flask>=3.1.2,<4
+numpy>=1.26,<3
+waitress>=3.0.2,<4
+cryptography>=43,<47

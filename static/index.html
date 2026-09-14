@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ModelTrace · 上游指纹检测</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header>
+    <div class="brand"><span>MT</span><div><b>ModelTrace</b><small>UPSTREAM FINGERPRINT LAB</small></div></div>
+    <span id="status" class="pill" role="status" aria-live="polite">读取中</span>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">SUB2API / UPSTREAM OBSERVABILITY</p>
+      <h1>检测上游，<em>看清指纹。</em></h1>
+      <p>三次独立数字挑战，比对模型的输出特征。沿用 ModelTrace 原始算法与统一指纹库，检测结果可导出复核。</p>
+    </section>
+    <form id="accessForm" class="access" hidden autocomplete="off">
+      <label>面板访问口令<input id="accessToken" type="password" autocomplete="off" required placeholder="部署时设置的 PANEL_ACCESS_TOKEN"></label>
+      <button class="primary" type="submit">解锁面板</button>
+      <p class="hint">口令仅在当前页面内存中使用，刷新后需重新输入。</p>
+    </form>
+    <nav class="tabs" aria-label="检测方式">
+      <button id="autoTab" type="button" aria-pressed="true">API 自动检测</button>
+      <button id="manualTab" type="button" aria-pressed="false">手动粘贴检测</button>
+    </nav>
+    <section class="grid">
+      <div class="panel config">
+        <div class="panel-head"><div><span class="kicker">01 / CONFIGURE</span><h2 id="configTitle">连接上游</h2></div><span class="dot"></span></div>
+        <form id="configForm" autocomplete="off">
+          <fieldset id="apiFields">
+            <label>已保存上游<select id="upstreamSelect"><option value="">新增上游（填写后自动保存）</option></select></label>
+            <p id="saveState" class="hint" role="status">正在读取已保存配置…</p>
+            <div class="saved-actions"><button id="deleteUpstream" type="button" class="ghost" hidden>删除所选配置</button></div>
+            <label>配置名称（可选）<input id="upstreamName" placeholder="留空自动使用上游域名"></label>
+            <label>Base URL<input id="base" type="url" placeholder="https://api.example.com/v1" required></label>
+            <div class="row">
+              <label>模型名<input id="model" placeholder="填写上游接受的模型名" maxlength="200" required></label>
+              <label>协议<select id="protocol"><option value="openai">Chat Completions</option><option value="responses">Responses</option><option value="anthropic">Anthropic Messages</option></select></label>
+            </div>
+            <label>API Key<input id="key" type="password" autocomplete="off" placeholder="仅用于本次检测" required></label>
+            <label>推理档位<select id="reasoningEffort">
+              <option value="">上游默认（不传参数）</option>
+              <option value="low">低 · low</option>
+              <option value="medium">中 · medium</option>
+              <option value="high">高 · high</option>
+              <option value="xhigh">超高 · xhigh</option>
+              <option value="max">最高 · max</option>
+              <option value="minimal">极低 · minimal</option>
+              <option value="none">无 · none</option>
+            </select></label>
+            <p id="reasoningHint" class="hint">按模型支持范围选择；设置会随上游配置保存。</p>
+            <div class="row">
+              <label>输出预算 / tokens<input id="budget" type="number" min="1024" max="32768" value="4096" required></label>
+              <label>Temperature<input id="temp" type="number" min="0" max="2" step="0.1" placeholder="不传，沿用上游默认"></label>
+            </div>
+            <label id="tokenFieldLabel">Chat Completions 预算字段<select id="tokenField"><option value="max_completion_tokens">max_completion_tokens</option><option value="max_tokens">max_tokens（兼容旧接口）</option></select></label>
+          </fieldset>
+          <div id="manualIntro" class="instructions" hidden>
+            <p>生成三条独立挑战，分别发送给同一个待测模型，每条使用新对话。</p>
+            <p>将完整输出粘贴到右侧对应位置，保留原始数字和格式。已知截断、拒答或调用工具生成的回答应留空。</p>
+            <p>手动模式只调用本服务进行归因，不会请求上游。</p>
+          </div>
+          <div class="config-actions"><button id="saveUpstream" type="button" class="ghost">保存当前上游</button><button id="start" type="submit" class="primary" disabled>开始检测 · 3 次请求 →</button></div>
+          <button id="stop" type="button" class="ghost" hidden>完成当前请求后停止</button>
+        </form>
+        <p id="runHint" class="hint">上游配置自动加密保存。点击开始最多调用 3 次，不自动重试；检测失败也会保留配置。</p>
+        <details class="method"><summary>检测原理与参考来源</summary>
+          <p>0.75 × 去除环境方向后的 Hellinger 模型中心相似度 + 0.25 × 有序块数字特征。多份有效回答分别评分后取平均，按有效查询数量校准并 softmax 归因。</p>
+          <p>数字有效门槛沿用原项目：至少 max(80, ceil(请求数量 × 55%)) 个可解析数字。API 明确返回截断或拒答时整条排除。</p>
+          <p>参考库来自原项目；作者说明 GPT 样本采自官方订阅 Codex，Claude 样本采自第三方 OAIPro。参考标签未经本面板独立验证。</p>
+          <div id="modelBank" class="bank-list"></div>
+        </details>
+      </div>
+      <div class="panel challenges">
+        <div class="panel-head"><div><span class="kicker">02 / RUN</span><h2>三次挑战</h2></div><span id="counter" class="mono">0 / 3 已完成</span></div>
+        <div id="challengeList" class="challenge-list"><div class="empty">等待开始检测<br><small>三条挑战将独立发送，逐条显示进度。</small></div></div>
+        <button id="manualAnalyze" type="button" class="primary" hidden>计算归因概率</button>
+      </div>
+    </section>
+    <section id="report" class="panel report" hidden>
+      <div class="panel-head"><div><span class="kicker">03 / RESULT</span><h2>归因报告</h2></div><button id="download" type="button" class="ghost">下载 JSON ↓</button></div>
+      <p id="partialNote" class="notice" hidden></p>
+      <p id="requestedEffort" class="hint"></p>
+      <div id="summary"></div><div id="table" class="table-wrap"></div>
+      <p class="disclaimer">这是当前候选库内、均匀先验下的闭集归因概率。未收录模型仍会归到已有候选，高概率不能证明真实身份，也不代表能力得分或降智百分比。不同模型版本、提示词环境和采样参数会影响结果。</p>
+    </section>
+    <footer><span>Based on <a href="https://github.com/xqy2006/ModelTrace" target="_blank" rel="noreferrer">xqy2006/ModelTrace</a> · MIT</span><span id="bank"></span></footer>
+  </main>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
